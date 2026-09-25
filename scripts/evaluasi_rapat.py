@@ -79,7 +79,11 @@ def koma(x, digit: int = 1) -> str:
     return f"{x:.{digit}f}".replace(".", ",")
 
 
-def tulis(metrik: dict, diag: dict, n: int, out: Path, perintah: str) -> None:
+def git(*args) -> str:
+    return subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True).stdout.strip()
+
+
+def tulis(metrik: dict, diag: dict, n: int, out: Path, perintah: str, git_info: dict) -> None:
     out.mkdir(exist_ok=True)
     with open(out / "evaluasi_rapat.csv", "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
@@ -125,10 +129,7 @@ def tulis(metrik: dict, diag: dict, n: int, out: Path, perintah: str) -> None:
     fig.tight_layout()
     fig.savefig(out / "evaluasi_rapat.png", dpi=150)
 
-    def git(*args):
-        return subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True).stdout.strip()
-    meta = {"commit": git("rev-parse", "HEAD"), "working_tree_bersih": git("status", "--porcelain") == "",
-            "perintah": perintah, "tanggal": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+    meta = {**git_info, "perintah": perintah, "tanggal": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "n_skenario": n, "seed": [0, n - 1], "diagnosis": diag}
     (out / "evaluasi_rapat.meta.json").write_text(json.dumps(meta, indent=2) + "\n", encoding="utf-8")
 
@@ -137,8 +138,10 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--n", type=int, default=500)
     a = ap.parse_args()
+    # Status git dicatat sebelum file hasil ditulis.
+    git_info = {"commit": git("rev-parse", "HEAD"), "working_tree_bersih": git("status", "--porcelain") == ""}
     metrik, diag = evaluasi(a.n)
-    tulis(metrik, diag, a.n, ROOT / "runs", "python " + " ".join(sys.argv))
+    tulis(metrik, diag, a.n, ROOT / "runs", "python " + " ".join(sys.argv), git_info)
     print((ROOT / "runs" / "evaluasi_rapat.md").read_text(encoding="utf-8"))
 
 
