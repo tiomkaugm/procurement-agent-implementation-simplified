@@ -1,0 +1,18 @@
+{
+  "commit": "54686d50470349397331b1e2e7e8fcc63b6828e8",
+  "working_tree_bersih": true,
+  "perintah": "python scripts/evaluasi_rapat.py",
+  "tanggal": "2026-09-25T04:11:09+00:00",
+  "n_skenario": 500,
+  "seed": [
+    0,
+    499
+  ],
+  "diagnosis": {
+    "infeasible_kas": 0,
+    "mendesak_tidak_mungkin": 54,
+    "eskalasi_pada_infeasible_a": 0,
+    "eskalasi_pada_infeasible_b": 0,
+    "eskalasi_pada_infeasible_c": 0
+  }
+}
