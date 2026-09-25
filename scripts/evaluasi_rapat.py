@@ -72,8 +72,11 @@ def evaluasi(n: int) -> tuple[dict, dict]:
     return metrik, diag
 
 
-def koma(x) -> str:
-    return str(x).replace(".", ",")
+DIGIT = {"biaya_rata_juta": 2, "rata_jumlah_rapat": 2}
+
+
+def koma(x, digit: int = 1) -> str:
+    return f"{x:.{digit}f}".replace(".", ",")
 
 
 def tulis(metrik: dict, diag: dict, n: int, out: Path, perintah: str) -> None:
@@ -87,10 +90,11 @@ def tulis(metrik: dict, diag: dict, n: int, out: Path, perintah: str) -> None:
     lines = [f"# Hasil evaluasi pada {n} skenario acak (seed 0-{n - 1})", "",
              "| Metrik | " + " | ".join(KOLOM.values()) + " |", "|---|" + "---|" * len(KOLOM)]
     for key, label in BARIS:
-        lines.append(f"| {label} | " + " | ".join(koma(metrik[k][key]) for k in KONDISI) + " |")
+        lines.append(f"| {label} | " + " | ".join(koma(metrik[k][key], DIGIT.get(key, 1)) for k in KONDISI) + " |")
     lines += ["", "Catatan:",
               "- Biaya rata-rata dihitung dari rencana akhir yang semua batch-nya punya pemasok: "
-              + ", ".join(f"{KOLOM[k]} n = {metrik[k]['n_biaya']}" for k in KONDISI) + ".",
+              + ", ".join(f"{KOLOM[k]} n = {metrik[k]['n_biaya']}" for k in KONDISI)
+              + ". Karena n berbeda, biaya rata-rata antar kondisi tidak dihitung pada skenario yang sama.",
               f"- Skenario yang terbukti tidak mungkin menurut `cash_diagnosis` (kas sepanjang horizon kurang dari "
               f"tagihan termurah yang mungkin): {diag['infeasible_kas']} dari {n}. Eskalasi pada skenario itu: "
               + ", ".join(f"{KOLOM[k]} {diag[f'eskalasi_pada_infeasible_{k}']}" for k in KONDISI) + ".",
