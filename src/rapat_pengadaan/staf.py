@@ -349,9 +349,18 @@ class StafKeuangan:
 
     @staticmethod
     def hitung_dulu(cek: dict, cek_berlaku: dict) -> bool:
-        """Usulan diterima jika tidak ada jenis pelanggaran baru DAN kas terendah tidak lebih buruk."""
-        baru = set(cek["pelanggaran"]) - set(cek_berlaku["pelanggaran"])
-        return not baru and cek["kas_terendah"] >= cek_berlaku["kas_terendah"]
+        """Usulan diterima jika tidak ada jenis pelanggaran baru DAN kas terendah tidak lebih buruk.
+
+        Keputusan tim (DECISIONS.md): usulan yang menghilangkan satu jenis pelanggaran tanpa menambah jenis baru
+        langsung diterima. Tanpa ini, rencana yang batch mendesaknya tanpa pemasok (kas tidak terpakai) selalu
+        menang dari usulan yang benar-benar membeli barang.
+        """
+        usulan, berlaku = set(cek["pelanggaran"]), set(cek_berlaku["pelanggaran"])
+        if usulan - berlaku:
+            return False
+        if usulan < berlaku:
+            return True
+        return cek["kas_terendah"] >= cek_berlaku["kas_terendah"]
 
     def ringkas(self, cek: dict) -> str:
         sisa = cek["sisa_anggaran"]
@@ -383,7 +392,10 @@ class StafKeuangan:
             cek = self.periksa(rencana)
             terima = self.hitung_dulu(cek, cek_berlaku)
             kalimat = [f"Usulan {label_rencana(rencana)}: {self.ringkas(cek)}"]
-            if terima:
+            if terima and set(cek["pelanggaran"]) < set(cek_berlaku["pelanggaran"]):
+                hilang = [NAMA_PELANGGARAN[p] for p in cek_berlaku["pelanggaran"] if p not in cek["pelanggaran"]]
+                kalimat.append(f"Saya terima: {', '.join(hilang)} teratasi dan tidak ada pelanggaran baru.")
+            elif terima:
                 kalimat.append("Saya terima: tidak ada pelanggaran baru dan kas tidak lebih buruk.")
             else:
                 alasan = [NAMA_PELANGGARAN[p] for p in cek["pelanggaran"] if p not in cek_berlaku["pelanggaran"]]
