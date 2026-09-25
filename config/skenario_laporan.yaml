@@ -1,0 +1,51 @@
+# Skenario laporan (Subbab 6.1) dan asumsi tim (Tabel 6.1). Uang dalam rupiah bulat.
+permintaan:
+  jumlah: 1000
+  unit_mendesak: 700          # 300 unit sisanya bisa menunggu bulan depan
+  anggaran: 100000000
+  tenggat_hari: 10
+
+kas:
+  awal: 150000000
+  kebutuhan_lain: [70000000, 0, 0, 0]   # bulan 1 = 40 jt + 30 jt (6.5); horizon 4 bulan (Tabel 6.1)
+  masuk: [0, 0, 0, 0]                   # tanpa arus kas masuk (Tabel 6.1)
+  batas_minimum: 60000000               # hanya peringatan (6.5)
+
+skor:
+  bobot: {kualitas: 0.4, waktu: 0.3, reputasi: 0.2, harga: 0.1}
+  ambang: 6.0                           # asumsi tim (Tabel 6.1)
+
+pemasok:
+  A:
+    harga_penawaran: 100000
+    transport: 5000
+    risiko: 2000
+    kualitas: 8
+    waktu_kirim: 5
+    kapasitas: 800
+    harga_lantai: 95000     # asumsi tim (Tabel 6.1)
+    diskon_persen: 0
+    reputasi: 7.00          # asumsi tim, dihitung balik dari skor 6.2
+    relasi: 0.6             # asumsi tim (Tabel 6.1)
+  B:
+    harga_penawaran: 90000
+    transport: 7000
+    risiko: 5000
+    kualitas: 9
+    waktu_kirim: 7
+    kapasitas: 1200
+    harga_lantai: 89000     # asumsi tim (Tabel 6.1, dari Subbab 6.4)
+    diskon_persen: 2        # bayar dalam 7 hari (6.4)
+    reputasi: 8.45
+    relasi: 0.6
+  C:
+    harga_penawaran: 110000
+    transport: 4000
+    risiko: 1000
+    kualitas: 7
+    waktu_kirim: 3
+    kapasitas: 600
+    harga_lantai: 108000    # asumsi tim (Tabel 6.1)
+    diskon_persen: 0
+    reputasi: 2.55
+    relasi: 0.6

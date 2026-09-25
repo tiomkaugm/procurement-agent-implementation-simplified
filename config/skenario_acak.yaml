@@ -1,0 +1,12 @@
+# Rentang skenario acak (Tabel 7.2 laporan). Sama dengan rentang versi laporan sebelumnya.
+# Setiap skenario acak diturunkan dari skenario laporan dengan gangguan pada data pemasok.
+jumlah: [600, 1400]
+porsi_mendesak: [0.5, 0.8]
+tenggat_hari: [6, 14]
+gangguan_pemasok: 0.10                  # +-10% pada harga, transport, risiko, kapasitas, waktu kirim
+relasi: [0.4, 0.9]
+anggaran_per_unit: [100000, 125000]     # langkah Rp1.000
+kas_awal: [125000000, 230000000]        # langkah Rp1 juta
+kebutuhan_lain_bulan1: [0, 80000000]    # langkah Rp1 juta; bulan 2-4 = 0
+kas_masuk_bulan2_4: [0, 80000000]       # langkah Rp1 juta; bulan 1 = 0
+batas_minimum: 60000000

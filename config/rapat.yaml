@@ -1,0 +1,12 @@
+# Parameter aturan rapat yang tidak tercantum di data skenario.
+# Semua nilai di sini adalah asumsi tim (Tabel 6.1 laporan); lihat DECISIONS.md.
+batas_rapat: 6                      # asumsi tim: rapat koordinasi dibatasi enam kali
+
+negosiasi:                          # asumsi tim: konsesi bertahap (6.4)
+  tawaran_awal: 0.99                # tawaran awal = round(0,99 x harga penawaran)
+  kenaikan: 0.005                   # naik round(0,005 x harga penawaran) per langkah
+  konsesi_pemasok: 0.5              # pemasok turun round(0,5 x (penawaran - lantai)) per langkah
+
+termin:                             # asumsi tim: revisi termin
+  porsi_pertama: 0.5                # 50% bulan +1, 50% bulan +2 (dipakai di biaya.payment_schedule)
+  relasi_minimum: 0.5               # pemasok setuju termin jika relasi >= 0,5
