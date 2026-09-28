@@ -1,8 +1,8 @@
 {
-  "commit": "6bc1804609f422c0f0437e564bab9d10f79ac903",
-  "working_tree_bersih": false,
+  "commit": "f110bda393f48f41e7bba215a4e7de4035be018f",
+  "working_tree_bersih": true,
   "perintah": "python scripts/evaluasi_rapat.py",
-  "tanggal": "2026-09-28T01:08:05+00:00",
+  "tanggal": "2026-09-28T01:08:20+00:00",
   "n_skenario": 500,
   "seed": [
     0,
