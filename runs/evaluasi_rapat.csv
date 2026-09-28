@@ -1,9 +1,9 @@
 metrik,Tanpa rapat,Aturan tetap,Aturan reaksi
-setuju_pct,50.4,72.8,77.0
+setuju_pct,50.4,72.8,81.2
 pelanggaran_anggaran_pct,5.6,9.0,5.6
-pelanggaran_kas_pct,8.6,7.8,0.6
-unit_mendesak_terpenuhi_pct,63.8,89.2,83.2
-biaya_rata_juta,88.94,100.9,97.18
-rata_jumlah_rapat,0.0,1.78,1.62
-eskalasi_pct,0.0,27.2,23.0
-n_biaya,319,446,416
+pelanggaran_kas_pct,8.6,7.8,1.2
+unit_mendesak_terpenuhi_pct,63.8,89.2,88.0
+biaya_rata_juta,88.94,100.9,99.05
+rata_jumlah_rapat,0.0,1.78,1.7
+eskalasi_pct,0.0,27.2,18.8
+n_biaya,319,446,440
