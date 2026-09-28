@@ -20,6 +20,7 @@ aturan if-else yang bisa dihitung dengan kalkulator.
 | `.venv/bin/python scripts/cetak_notulen.py` | Notulen skenario laporan (kondisi c) |
 | `.venv/bin/python scripts/cetak_notulen.py --seed 3 --kondisi b` | Notulen skenario acak, kondisi a/b/c |
 | `.venv/bin/python scripts/evaluasi_rapat.py` | Evaluasi 500 skenario (Subbab 7.4) ke `runs/evaluasi_rapat.*` |
+| `.venv/bin/streamlit run app/streamlit_app.py` | Dashboard pemantauan rapat (notulen, rencana per usulan, grafik kas, tab evaluasi) |
 
 ## Struktur
 
@@ -31,6 +32,7 @@ aturan if-else yang bisa dihitung dengan kalkulator.
 | `src/rapat_pengadaan/biaya.py` | Rumus biaya dan kas (`payment_schedule`, `cash_balances`) |
 | `src/rapat_pengadaan/skenario.py` | `load_scenario`, `sample_scenario(seed)`, `composite_scores` (SAW), `cash_diagnosis` |
 | `src/rapat_pengadaan/staf.py` | `StafPermintaan`, `StafPurchasing`, `Negosiator`, `StafKeuangan`, `Pemasok` (method `tanggapi(pesan)`) |
+| `app/streamlit_app.py` | Dashboard Streamlit; semua angka dari fungsi di `src/`, evaluasi dibaca dari `runs/` |
 | `src/rapat_pengadaan/rapat.py` | Loop rapat: `jalankan_rapat` (c), `rapat_aturan_tetap` (b), `putuskan_sendiri` (a), `cetak_notulen` |
 
 ## Kondisi evaluasi (Subbab 7.4)
