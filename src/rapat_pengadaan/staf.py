@@ -351,16 +351,25 @@ class StafKeuangan:
     def hitung_dulu(cek: dict, cek_berlaku: dict) -> bool:
         """Usulan diterima jika tidak ada jenis pelanggaran baru DAN kas terendah tidak lebih buruk.
 
-        Keputusan tim (DECISIONS.md): usulan yang menghilangkan satu jenis pelanggaran tanpa menambah jenis baru
-        langsung diterima. Tanpa ini, rencana yang batch mendesaknya tanpa pemasok (kas tidak terpakai) selalu
-        menang dari usulan yang benar-benar membeli barang.
+        Keputusan tim (DECISIONS.md):
+        - usulan yang menghilangkan satu jenis pelanggaran tanpa menambah jenis baru langsung diterima;
+        - unit mendesak lebih berat daripada kas minus: usulan yang memenuhi unit mendesak dan hanya menambah
+          kas minus diterima (kekurangan kas dicoba ditutup di rapat berikutnya, atau dibawa ke atasan).
         """
+        if StafKeuangan.tukar_mendesak(cek, cek_berlaku):
+            return True
         usulan, berlaku = set(cek["pelanggaran"]), set(cek_berlaku["pelanggaran"])
         if usulan - berlaku:
             return False
         if usulan < berlaku:
             return True
         return cek["kas_terendah"] >= cek_berlaku["kas_terendah"]
+
+    @staticmethod
+    def tukar_mendesak(cek: dict, cek_berlaku: dict) -> bool:
+        """Unit mendesak teratasi dan satu-satunya pelanggaran baru adalah kas minus."""
+        usulan, berlaku = set(cek["pelanggaran"]), set(cek_berlaku["pelanggaran"])
+        return MENDESAK in berlaku and MENDESAK not in usulan and usulan - berlaku == {KAS_MINUS}
 
     def ringkas(self, cek: dict) -> str:
         sisa = cek["sisa_anggaran"]
@@ -392,7 +401,10 @@ class StafKeuangan:
             cek = self.periksa(rencana)
             terima = self.hitung_dulu(cek, cek_berlaku)
             kalimat = [f"Usulan {label_rencana(rencana)}: {self.ringkas(cek)}"]
-            if terima and set(cek["pelanggaran"]) < set(cek_berlaku["pelanggaran"]):
+            if terima and self.tukar_mendesak(cek, cek_berlaku):
+                kalimat.append("Saya terima: unit mendesak lebih penting. Kas jadi minus, akan kita cari "
+                               "jalan keluarnya di rapat berikutnya.")
+            elif terima and set(cek["pelanggaran"]) < set(cek_berlaku["pelanggaran"]):
                 hilang = [NAMA_PELANGGARAN[p] for p in cek_berlaku["pelanggaran"] if p not in cek["pelanggaran"]]
                 kalimat.append(f"Saya terima: {', '.join(hilang)} teratasi dan tidak ada pelanggaran baru.")
             elif terima:

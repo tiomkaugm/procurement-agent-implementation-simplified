@@ -109,6 +109,32 @@ def test_hitung_dulu_menolak_pelanggaran_baru():
     assert StafKeuangan.hitung_dulu({"pelanggaran": [], "kas_terendah": 10}, berlaku2)
 
 
+def test_usulan_hapus_mendesak_diterima_walau_kas_turun():
+    berlaku = {"pelanggaran": [MENDESAK], "kas_terendah": 65_000_000}
+    # Tanpa pelanggaran baru, kas turun: diterima.
+    assert StafKeuangan.hitung_dulu({"pelanggaran": [], "kas_terendah": 1_000}, berlaku)
+    # Unit mendesak lebih berat daripada kas minus: tukar dengan kas minus diterima.
+    assert StafKeuangan.hitung_dulu({"pelanggaran": [KAS_MINUS], "kas_terendah": -34_517_400}, berlaku)
+
+
+def test_usulan_tambah_pelanggaran_lain_tetap_ditolak():
+    berlaku = {"pelanggaran": [MENDESAK], "kas_terendah": 65_000_000}
+    # Anggaran tetap batas keras, juga saat menukar unit mendesak.
+    assert not StafKeuangan.hitung_dulu({"pelanggaran": [ANGGARAN], "kas_terendah": 1}, berlaku)
+    assert not StafKeuangan.hitung_dulu({"pelanggaran": [KAS_MINUS, ANGGARAN], "kas_terendah": 1}, berlaku)
+    # Tanpa unit mendesak di rencana berlaku, kas minus tetap pelanggaran baru.
+    assert not StafKeuangan.hitung_dulu({"pelanggaran": [KAS_MINUS], "kas_terendah": -1},
+                                        {"pelanggaran": [], "kas_terendah": 0})
+    assert not StafKeuangan.hitung_dulu({"pelanggaran": [KAS_MINUS, ANGGARAN], "kas_terendah": 0},
+                                        {"pelanggaran": [KAS_MINUS], "kas_terendah": -100})
+
+
+def test_seed_27_tukar_mendesak_lalu_setuju():
+    h = jalankan_rapat(sample_scenario(27))
+    assert h.setuju and h.jumlah_rapat == 5
+    assert h.riwayat[1]["keputusan"] == "berlaku" and h.riwayat[1]["cek"]["pelanggaran"] == [KAS_MINUS]
+
+
 def test_tidak_mengulang_rencana_atau_usulan():
     for h in [HASIL] + [jalankan_rapat(sample_scenario(s)) for s in range(0, 500, 5)]:
         kunci = [kunci_rencana(e["rencana"]) for e in h.riwayat if e["rencana"] is not None]

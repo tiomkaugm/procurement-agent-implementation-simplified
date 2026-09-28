@@ -33,6 +33,16 @@ Laporan `Revisi Laporan Procurement_3.docx` adalah spesifikasi. Semua yang tidak
    mendesak selalu ditolak. Pada 500 skenario, versi literal memberi setuju 288 dan unit mendesak terpenuhi 319
    (sama dengan tanpa rapat); versi ini memberi 385 dan 416. Tabel 7.1 sama persis di kedua versi.
    **Perlu satu kalimat tambahan di Subbab 5.4 laporan.**
+1b. **Unit mendesak lebih berat daripada kas minus (keputusan tim, 28 Sep 2026).** Usulan yang memenuhi unit
+   mendesak dan satu-satunya pelanggaran barunya kas minus tetap diterima. Anggaran terlampaui tetap batas keras:
+   usulan yang menambah anggaran terlampaui ditolak. Alasan: pada 30 skenario, usulan beli bertahap yang memenuhi
+   unit mendesak ditolak karena menimbulkan kas minus, padahal kas minus masih bisa dicoba ditutup di rapat
+   berikutnya (menggeser pembayaran ke bulan dengan kas masuk) atau dibawa ke atasan, sedangkan unit mendesak yang
+   terlambat menghentikan produksi. Simulasi sebelum perubahan: setuju 77,0% -> 81,2%, unit mendesak terpenuhi
+   83,2% -> 88,0%, pelanggaran kas 0,6% -> 1,2%, eskalasi 23,0% -> 18,8%; 21 skenario jadi setuju, tidak ada yang
+   jadi tidak setuju. Varian yang juga membolehkan anggaran terlampaui memberi setuju yang sama (81,2%) tetapi
+   pelanggaran anggaran naik ke 6,8%, jadi tidak dipakai. Tabel 7.1 tetap sama persis.
+   **Perlu kalimat tambahan di Subbab 5.4 laporan (urutan berat pelanggaran).**
 2. **Pembulatan** tawaran dan konsesi: setengah ke atas (bukan pembulatan bankir Python).
 3. **Satu pemasok per batch.** Tidak ada pembagian satu batch ke dua pemasok.
 4. **Harga setara pesaing** memakai harga penawaran pesaing (bukan harga yang sudah disepakati dengannya), seperti
@@ -61,6 +71,7 @@ Laporan `Revisi Laporan Procurement_3.docx` adalah spesifikasi. Semua yang tidak
 
 ## Catatan hasil
 
-- Pada sebagian skenario, (b) memenuhi unit mendesak lebih sering daripada (c). Penyebabnya aturan hitung dulu:
-  beli bertahap memperbaiki unit mendesak tetapi menimbulkan kas minus (jenis pelanggaran baru), sehingga (c)
-  menolaknya. Kondisi (b) memakainya tanpa menghitung, lalu tetap berakhir eskalasi karena kas minus.
+- Sebelum keputusan 1b, (b) memenuhi unit mendesak lebih sering daripada (c) (89,2% lawan 83,2%). Penyebabnya
+  syarat "tidak ada jenis pelanggaran baru": beli bertahap memperbaiki unit mendesak tetapi menimbulkan kas minus
+  (24 skenario), anggaran terlampaui (5), atau keduanya (2). Di 30 skenario itu (b) juga berakhir eskalasi.
+  Keputusan 1b menutup bagian kas minus; sisa selisihnya berasal dari usulan yang melampaui anggaran.
